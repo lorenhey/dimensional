@@ -1,0 +1,191 @@
+schema_version: 1
+
+dimensionless_numbers:
+  - id: reynolds
+    name: "Número de Reynolds"
+    definition: "rho * v * L / mu"
+    variables: ["rho", "v", "L", "mu"]
+    domain: "Mecánica de Fluidos"
+    interpretation: "Relación entre fuerzas inerciales y fuerzas viscosas. Determina si el flujo es laminar o turbulento."
+    references: ["Reynolds, O. (1883). An experimental investigation of the circumstances which determine whether the motion of water shall be direct or sinuous."]
+    aliases: ["Re"]
+
+  - id: froude
+    name: "Número de Froude"
+    definition: "v / (g * L)^(1/2)"
+    variables: ["v", "g", "L"]
+    domain: "Mecánica de Fluidos"
+    interpretation: "Relación entre fuerzas inerciales y fuerzas gravitatorias. Importante en flujos de superficie libre."
+    references: ["Froude, W. (1868). Observations on the Hull of the HMS Greyhound."]
+    aliases: ["Fr"]
+
+  - id: mach
+    name: "Número de Mach"
+    definition: "v / c"
+    variables: ["v", "c"]
+    domain: "Aerodinámica"
+    interpretation: "Relación entre la velocidad del flujo y la velocidad del sonido local. Determina los efectos de compresibilidad."
+    references: ["Mach, E. (1887). Fotografía de proyectiles en vuelo."]
+    aliases: ["Ma", "M"]
+
+  - id: weber
+    name: "Número de Weber"
+    definition: "rho * v^2 * L / sigma"
+    variables: ["rho", "v", "L", "sigma"]
+    domain: "Mecánica de Fluidos"
+    interpretation: "Relación entre fuerzas inerciales y fuerzas de tensión superficial. Relevante en formación de gotas y burbujas."
+    references: ["Weber, M. (1930). Das Ähnlichkeitsprinzip der Physik und seine Anwendung."]
+    aliases: ["We"]
+
+  - id: euler
+    name: "Número de Euler"
+    definition: "p / (rho * v^2)"
+    variables: ["p", "rho", "v"]
+    domain: "Mecánica de Fluidos"
+    interpretation: "Relación entre fuerzas de presión y fuerzas inerciales."
+    references: ["Leonhard Euler (1757). Principes généraux du mouvement des fluides."]
+    aliases: ["Eu"]
+
+  - id: strouhal
+    name: "Número de Strouhal"
+    definition: "f * L / v"
+    variables: ["f", "L", "v"]
+    domain: "Mecánica de Fluidos"
+    interpretation: "Mecanismos de flujo oscilatorio; relación entre el tiempo característico de convección y el de oscilación."
+    references: ["Strouhal, V. (1878). Ueber eine besondere Art der Ton-erregung."]
+    aliases: ["St", "Sr"]
+
+  - id: prandtl
+    name: "Número de Prandtl"
+    definition: "nu / alpha"
+    variables: ["nu", "alpha"]
+    domain: "Transferencia de Calor"
+    interpretation: "Relación entre la difusividad de momento (cinemática) y la difusividad térmica. Indica el espesor relativo de las capas límite hidrodinámica y térmica."
+    references: ["Prandtl, L. (1904). Über Flüssigkeitsbewegung bei sehr kleiner Reibung."]
+    aliases: ["Pr"]
+
+  - id: nusselt
+    name: "Número de Nusselt"
+    definition: "h * L / k"
+    variables: ["h", "L", "k"]
+    domain: "Transferencia de Calor"
+    interpretation: "Relación entre la transferencia de calor por convección y por conducción a través del fluido."
+    references: ["Nusselt, W. (1915). Das Grundgesetz des Wärmeüberganges."]
+    aliases: ["Nu"]
+    
+  - id: biot
+    name: "Número de Biot"
+    definition: "h * L / k_s"
+    variables: ["h", "L", "k_s"]
+    domain: "Transferencia de Calor"
+    interpretation: "Relación entre la resistencia a la conducción interna de un cuerpo y la resistencia convectiva en su superficie."
+    references: ["Biot, J.B. (1804)."]
+    aliases: ["Bi"]
+
+  - id: fourier
+    name: "Número de Fourier"
+    definition: "alpha * t / L^2"
+    variables: ["alpha", "t", "L"]
+    domain: "Transferencia de Calor"
+    interpretation: "Relación entre la tasa de conducción de calor y la tasa de almacenamiento de energía térmica (tiempo adimensional)."
+    references: ["Fourier, J. (1822). Théorie analytique de la chaleur."]
+    aliases: ["Fo"]
+
+  - id: peclet_heat
+    name: "Número de Péclet (Calor)"
+    definition: "L * v / alpha"
+    variables: ["L", "v", "alpha"]
+    domain: "Transferencia de Calor"
+    interpretation: "Relación entre la advección de calor y la difusión de calor. Equivalente a Re * Pr."
+    references: ["Péclet, J.C.E. (1843). Traité de la chaleur."]
+    aliases: ["Pe"]
+
+  - id: grashof
+    name: "Número de Grashof"
+    definition: "g * beta * delta_T * L^3 / nu^2"
+    variables: ["g", "beta", "T_s", "T_inf", "L", "nu"]
+    domain: "Transferencia de Calor"
+    interpretation: "Relación entre fuerzas de flotación y fuerzas viscosas en convección natural."
+    references: ["Grashof, F."]
+    aliases: ["Gr"]
+
+  - id: rayleigh
+    name: "Número de Rayleigh"
+    definition: "g * beta * delta_T * L^3 / (nu * alpha)"
+    variables: ["g", "beta", "T_s", "T_inf", "L", "nu", "alpha"]
+    domain: "Transferencia de Calor"
+    interpretation: "Producto de Grashof y Prandtl. Determina la transición de convección natural laminar a turbulenta."
+    references: ["Rayleigh, Lord (1916)."]
+    aliases: ["Ra"]
+
+  - id: schmidt
+    name: "Número de Schmidt"
+    definition: "nu / D_AB"
+    variables: ["nu", "D_AB"]
+    domain: "Transferencia de Masa"
+    interpretation: "Relación entre la difusividad de momento y la difusividad de masa. Análogo al número de Prandtl."
+    references: ["Schmidt, E. (1929)."]
+    aliases: ["Sc"]
+
+  - id: sherwood
+    name: "Número de Sherwood"
+    definition: "k_c * L / D_AB"
+    variables: ["k_c", "L", "D_AB"]
+    domain: "Transferencia de Masa"
+    interpretation: "Relación entre la transferencia de masa convectiva y la difusiva. Análogo al número de Nusselt."
+    references: ["Sherwood, T.K."]
+    aliases: ["Sh"]
+
+  - id: peclet_mass
+    name: "Número de Péclet (Masa)"
+    definition: "L * v / D_AB"
+    variables: ["L", "v", "D_AB"]
+    domain: "Transferencia de Masa"
+    interpretation: "Relación entre la advección de masa y la difusión de masa. Equivalente a Re * Sc."
+    references: ["Péclet, J.C.E."]
+    aliases: ["Pe_m"]
+
+  - id: knudsen
+    name: "Número de Knudsen"
+    definition: "lambda_mfp / L"
+    variables: ["lambda_mfp", "L"]
+    domain: "Mecánica de Fluidos (Rarefacción)"
+    interpretation: "Relación entre el recorrido libre medio molecular y la longitud característica física. Define si aplica la aproximación del continuo."
+    references: ["Knudsen, M. (1909)."]
+    aliases: ["Kn"]
+
+  - id: rossby
+    name: "Número de Rossby"
+    definition: "v / (f_coriolis * L)"
+    variables: ["v", "f_coriolis", "L"]
+    domain: "Dinámica de Fluidos Geofísica"
+    interpretation: "Relación entre las fuerzas inerciales y las fuerzas de Coriolis en fluidos rotantes."
+    references: ["Rossby, C.-G. (1939)."]
+    aliases: ["Ro"]
+    
+  - id: stokes
+    name: "Número de Stokes"
+    definition: "tau_p * v / L"
+    variables: ["tau_p", "v", "L"]
+    domain: "Flujo Multifásico"
+    interpretation: "Relación entre el tiempo de relajación de una partícula y el tiempo característico del flujo. Determina si la partícula sigue las líneas de corriente."
+    references: ["Stokes, G.G. (1851)."]
+    aliases: ["Stk"]
+
+  - id: drag_coefficient
+    name: "Coeficiente de Arrastre"
+    definition: "F_d / (rho * v^2 * L^2)"
+    variables: ["F_d", "rho", "v", "L"]
+    domain: "Aerodinámica / Hidrodinámica"
+    interpretation: "Relación de la fuerza de resistencia aerodinámica o hidrodinámica frente a la presión dinámica multiplicada por el área."
+    references: ["Convencional"]
+    aliases: ["C_d"]
+
+  - id: lift_coefficient
+    name: "Coeficiente de Sustentación"
+    definition: "F_l / (rho * v^2 * L^2)"
+    variables: ["F_l", "rho", "v", "L"]
+    domain: "Aerodinámica / Hidrodinámica"
+    interpretation: "Relación de la fuerza de sustentación frente a la presión dinámica multiplicada por el área."
+    references: ["Convencional"]
+    aliases: ["C_l"]

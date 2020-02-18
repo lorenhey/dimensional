@@ -6,7 +6,7 @@ from pydantic import BaseModel
 class DimensionlessNumberSchema(BaseModel):
     id: str
     name: str
-    definitions: List[str]
+    definition: str
     variables: List[str]
     domain: str
     interpretation: str
@@ -16,6 +16,9 @@ class DimensionlessNumberSchema(BaseModel):
 class Registry:
     def __init__(self):
         self.dimensionless_numbers: Dict[str, DimensionlessNumberSchema] = {}
+        # Auto-load the bundled catalog
+        catalog_dir = Path(__file__).parent / "data"
+        self.load_dimensionless(catalog_dir / "dimensionless.yaml")
         
     def load_dimensionless(self, path: Path):
         with open(path, 'r', encoding='utf-8') as f:

@@ -17,18 +17,20 @@ class Quantity:
     Represents a physical variable with a name, a symbol, and a specific Dimension.
     This separates the mathematical representation of dimensions from arbitrary labels.
     """
-    def __init__(self, name: str, dimension: Dimension, symbol: Optional[str] = None, preferred_unit: Optional[str] = None):
+    def __init__(self, name: str, dimension: Dimension, symbol: Optional[str] = None, preferred_unit: Optional[str] = None, description: Optional[str] = None):
         self.name = name
         self.symbol = symbol or name
         self.dimension = dimension
         self.preferred_unit = preferred_unit
+        self.description = description
 
     @classmethod
     def from_schema(cls, schema: QuantitySchema) -> 'Quantity':
         return cls(
             name=schema.id,
             dimension=Dimension(schema.dimension),  # type: ignore
-            preferred_unit=schema.preferred_unit
+            preferred_unit=schema.preferred_unit,
+            description=schema.description
         )
 
     def __str__(self) -> str:

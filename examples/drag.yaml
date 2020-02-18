@@ -1,0 +1,24 @@
+# Drag on a Sphere Analysis
+name: "Drag on a sphere"
+description: "Determining the dimensionless groups that characterize the drag force on a smooth sphere moving through a viscous fluid."
+
+variables:
+  - id: "F_d"
+    quantity: "force"
+    role: "target"
+  - id: "rho"
+    quantity: "density"
+    role: "basis"
+  - id: "v"
+    quantity: "velocity"
+    role: "basis"
+  - id: "L"
+    quantity: "length"
+    role: "basis"
+  - id: "mu"
+    quantity: "dynamic_viscosity"
+    role: "basis"
+
+expected_groups:
+  - "F_d / (rho * v^2 * L^2)"  # Drag coefficient
+  - "rho * v * L / mu"         # Reynolds number

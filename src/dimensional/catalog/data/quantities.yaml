@@ -1,0 +1,133 @@
+schema_version: 1
+
+quantities:
+  # Base Dimensions
+  - id: length
+    dimension: {L: 1}
+    preferred_unit: m
+    aliases: [L, x, y, z, r, h, d, D]
+    description: "Extensión lineal en el espacio."
+    
+  - id: mass
+    dimension: {M: 1}
+    preferred_unit: kg
+    aliases: [m, M]
+    description: "Medida de inercia o cantidad de materia."
+    
+  - id: time
+    dimension: {T: 1}
+    preferred_unit: s
+    aliases: [t, tau]
+    description: "Duración continua en la que ocurren los eventos."
+    
+  - id: temperature
+    dimension: {Theta: 1}
+    preferred_unit: K
+    aliases: [T, theta]
+    description: "Temperatura termodinámica."
+
+  # Kinematics
+  - id: velocity
+    dimension: {L: 1, T: -1}
+    preferred_unit: m/s
+    aliases: [v, u, w, V, c]
+    description: "Tasa de cambio de la posición con respecto al tiempo."
+    
+  - id: acceleration
+    dimension: {L: 1, T: -2}
+    preferred_unit: m/s^2
+    aliases: [a, g]
+    description: "Tasa de cambio de la velocidad con respecto al tiempo."
+    
+  - id: kinematic_viscosity
+    dimension: {L: 2, T: -1}
+    preferred_unit: m^2/s
+    aliases: [nu]
+    description: "Viscosidad dinámica dividida por la densidad (difusividad de momento)."
+
+  - id: volume_flow_rate
+    dimension: {L: 3, T: -1}
+    preferred_unit: m^3/s
+    aliases: [Q]
+    description: "Volumen de fluido que pasa por una sección por unidad de tiempo."
+
+  # Dynamics
+  - id: force
+    dimension: {M: 1, L: 1, T: -2}
+    preferred_unit: N
+    aliases: [F, W]
+    description: "Interacción que cambia el estado de movimiento de un objeto."
+
+  - id: density
+    dimension: {M: 1, L: -3}
+    preferred_unit: kg/m^3
+    aliases: [rho]
+    description: "Masa por unidad de volumen."
+    
+  - id: dynamic_viscosity
+    dimension: {M: 1, L: -1, T: -1}
+    preferred_unit: Pa*s
+    aliases: [mu, eta]
+    description: "Resistencia interna de un fluido al flujo."
+
+  - id: pressure
+    dimension: {M: 1, L: -1, T: -2}
+    preferred_unit: Pa
+    aliases: [p, P]
+    description: "Fuerza aplicada perpendicularmente a la superficie de un objeto por unidad de área."
+
+  - id: energy
+    dimension: {M: 1, L: 2, T: -2}
+    preferred_unit: J
+    aliases: [E, U, H, W]
+    description: "Capacidad de realizar trabajo."
+
+  - id: power
+    dimension: {M: 1, L: 2, T: -3}
+    preferred_unit: W
+    aliases: [P, pow]
+    description: "Tasa a la cual se transfiere o convierte energía."
+    
+  - id: surface_tension
+    dimension: {M: 1, T: -2}
+    preferred_unit: N/m
+    aliases: [sigma, gamma]
+    description: "Tendencia de la superficie de un líquido a contraerse."
+
+  # Thermodynamics & Heat Transfer
+  - id: thermal_conductivity
+    dimension: {M: 1, L: 1, T: -3, Theta: -1}
+    preferred_unit: W/(m*K)
+    aliases: [k, lambda]
+    description: "Propiedad de un material para conducir calor."
+
+  - id: heat_transfer_coefficient
+    dimension: {M: 1, T: -3, Theta: -1}
+    preferred_unit: W/(m^2*K)
+    aliases: [h]
+    description: "Proporcionalidad entre el flujo de calor y la diferencia de temperatura motriz."
+
+  - id: specific_heat_capacity
+    dimension: {L: 2, T: -2, Theta: -1}
+    preferred_unit: J/(kg*K)
+    aliases: [cp, cv, c]
+    description: "Energía calorífica necesaria para elevar la temperatura de una unidad de masa en un grado."
+
+  - id: thermal_diffusivity
+    dimension: {L: 2, T: -1}
+    preferred_unit: m^2/s
+    aliases: [alpha]
+    description: "Conductividad térmica dividida por la densidad y la capacidad calorífica."
+    
+  # Mass Transfer
+  - id: mass_diffusivity
+    dimension: {L: 2, T: -1}
+    preferred_unit: m^2/s
+    aliases: [D_AB, D]
+    description: "Tasa a la cual una sustancia se difunde a través de otra."
+    
+  - id: mass_transfer_coefficient
+    dimension: {L: 1, T: -1}
+    preferred_unit: m/s
+    aliases: [k_c]
+    description: "Proporcionalidad entre el flujo de masa y la diferencia de concentración."

@@ -1,0 +1,23 @@
+# Simple Pendulum Analysis
+name: "Simple Pendulum Period"
+description: "Finding the dimensionless relation for the period of a simple gravity pendulum."
+
+variables:
+  - id: "t"
+    quantity: "time"
+    role: "target"
+    description: "Period of oscillation"
+  - id: "L"
+    quantity: "length"
+    role: "basis"
+    description: "Length of the pendulum string"
+  - id: "g"
+    quantity: "acceleration"
+    role: "basis"
+    description: "Acceleration due to gravity"
+  - id: "m"
+    quantity: "mass"
+    role: "basis"
+    description: "Mass of the bob"
+    
+expected_relation: "t = f(L/g) * m^0"

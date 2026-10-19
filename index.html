@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dimensional — Laboratorio Computacional de Análisis Dimensional</title>
+    
+    <!-- Meta tags -->
+    <meta name="description" content="Laboratorio computacional interactivo para análisis dimensional, teorema Pi de Buckingham, espacio nulo de matrices dimensionales, verificación de homogeneidad y leyes de similitud física.">
+    <meta name="author" content="Loren Hey">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- KaTeX CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- SITE HEADER -->
+    <header class="site-header">
+        <div class="header-top">
+            <div class="brand-wrapper">
+                <div class="brand-icon">
+                    <i class="fas fa-cubes"></i>
+                </div>
+                <div class="brand-title-group">
+                    <h1>dimensional <span class="version-tag">v2.2.0</span></h1>
+                    <div class="brand-subtitle">Motor Computacional de Álgebra de Dimensiones, Teorema $\Pi$ y Similitud Física</div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <a href="https://github.com/lorenhey/dimensional" target="_blank" class="btn-github">
+                    <i class="fab fa-github"></i> <span>Ver Repositorio</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- NAV TABS -->
+        <nav class="nav-tabs-container">
+            <button class="nav-tab-btn active" data-tab="tab-lab">
+                <i class="fas fa-flask"></i> Laboratorio $\Pi$
+            </button>
+            <button class="nav-tab-btn" data-tab="tab-checker">
+                <i class="fas fa-balance-scale"></i> Homogeneidad
+            </button>
+            <button class="nav-tab-btn" data-tab="tab-similarity">
+                <i class="fas fa-compress-arrows-alt"></i> Similitud y Escala
+            </button>
+            <button class="nav-tab-btn" data-tab="tab-synthesizer">
+                <i class="fas fa-magic"></i> Síntesis de Potencias
+            </button>
+            <button class="nav-tab-btn" data-tab="tab-catalog">
+                <i class="fas fa-book-bookmark"></i> Catálogo Adimensional
+            </button>
+            <button class="nav-tab-btn" data-tab="tab-terminal">
+                <i class="fas fa-terminal"></i> Terminal CLI
+            </button>
+            <button class="nav-tab-btn" data-tab="tab-theory">
+                <i class="fas fa-graduation-cap"></i> Tratado Teórico
+            </button>
+        </nav>
+    </header>
+
+    <!-- APP CONTAINER -->
+    <main class="app-container">
+
+        <!-- ===============================================================
+             TAB 1: LABORATORIO BUCKINGHAM PI
+             =============================================================== -->
+        <section id="tab-lab" class="tab-panel active">
+            <div class="section-header">
+                <h2><i class="fas fa-atom"></i> Laboratorio del Teorema $\Pi$ de Buckingham</h2>
+                <p>Construí matrices dimensionales exactas, reducí filas mediante eliminación de Gauss-Jordan y hallá la base entera del espacio nulo $\ker(D)$ para obtener grupos adimensionales canónicos.</p>
+            </div>
+
+            <!-- STATS BAR -->
+            <div class="stats-counter-grid">
+                <div class="stat-counter-box">
+                    <div class="stat-counter-val" id="stat-num-vars">0</div>
+                    <div class="stat-counter-label">Variables Totales ($n$)</div>
+                </div>
+                <div class="stat-counter-box">
+                    <div class="stat-counter-val" id="stat-num-dims">0</div>
+                    <div class="stat-counter-label">Dimensiones Activas ($m$)</div>
+                </div>
+                <div class="stat-counter-box">
+                    <div class="stat-counter-val" id="stat-rank">0</div>
+                    <div class="stat-counter-label">Rango Algebraico ($r$)</div>
+                </div>
+                <div class="stat-counter-box highlight">
+                    <div class="stat-counter-val" id="stat-num-groups">0</div>
+                    <div class="stat-counter-label">Grupos $\Pi$ ($k = n - r$)</div>
+                </div>
+            </div>
+
+            <div class="lab-grid">
+                <!-- CONTROLS COLUMN -->
+                <div class="lab-controls-panel">
+                    <div class="panel-card">
+                        <div class="card-title">
+                            <i class="fas fa-sliders-h"></i> Configuración del Problema
+                        </div>
+
+                        <!-- PRESETS -->
+                        <div class="form-group">
+                            <label for="lab-preset-select">Casos Canónicos y Presets de Ingeniería</label>
+                            <select id="lab-preset-select" class="form-select">
+                                <option value="">-- Seleccioná un caso clásico --</option>
+                            </select>
+                        </div>
+
+                        <div id="lab-preset-theory" style="margin-bottom: 1.2rem;"></div>
+
+                        <!-- ADD QUANTITY -->
+                        <div class="form-group">
+                            <label for="lab-add-quantity-select">Añadir Magnitud Física</label>
+                            <div class="input-with-btn">
+                                <select id="lab-add-quantity-select" class="form-select"></select>
+                                <button type="button" id="btn-lab-add-q" class="btn-primary" title="Añadir al análisis">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- SELECTED CHIPS -->
+                        <div class="form-group">
+                            <label>Variables en el Sistema (Arrastrá o eliminá):</label>
+                            <div id="lab-chips-container" class="chips-container"></div>
+                        </div>
+
+                        <div style="display: flex; gap: 0.75rem;">
+                            <button type="button" id="btn-lab-compute" class="btn-primary" style="flex: 1;">
+                                <i class="fas fa-cogs"></i> Recalcular $\Pi$
+                            </button>
+                            <button type="button" id="btn-lab-reset" class="btn-secondary" title="Reiniciar">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RESULTS COLUMN -->
+                <div class="lab-display-panel">
+                    <!-- PI GROUPS CARDS -->
+                    <div class="panel-card">
+                        <div class="card-title">
+                            <i class="fas fa-certificate"></i> Grupos Adimensionales Independientes Obtenidos
+                        </div>
+                        <div id="lab-pi-results">
+                            <p class="text-muted">Esperando variables...</p>
+                        </div>
+                    </div>
+
+                    <!-- DIMENSIONAL MATRIX -->
+                    <div class="panel-card">
+                        <div class="card-title">
+                            <i class="fas fa-table"></i> Matriz Dimensional $D \in \mathbb{Q}^{m \times n}$
+                        </div>
+                        <div id="lab-matrix-display"></div>
+                    </div>
+
+                    <!-- RREF MATRIX -->
+                    <div class="panel-card">
+                        <div class="card-title">
+                            <i class="fas fa-stream"></i> Matriz Escalonada Reducida (RREF) y Espacio Nulo
+                        </div>
+                        <div id="lab-rref-display"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===============================================================
+             TAB 2: VERIFICADOR DE HOMOGENEIDAD
+             =============================================================== -->
+        <section id="tab-checker" class="tab-panel">
+            <div class="section-header">
+                <h2><i class="fas fa-balance-scale"></i> Verificador de Homogeneidad Dimensional</h2>
+                <p>Evaluá la consistencia física de cualquier ecuación algebraica según el principio fundamental de Fourier. Detectá sumas de términos dimensionalmente incompatibles o verificá el balance entre miembros.</p>
+            </div>
+
+            <div class="panel-card">
+                <div class="card-title">
+                    <i class="fas fa-edit"></i> Entrada de Ecuación Físico-Matemática
+                </div>
+
+                <div class="checker-input-row">
+                    <input type="text" id="checker-input-equation" class="form-input" placeholder="Ejemplo: F = m * a  o  p + 0.5 * rho * v^2 = p" value="F = m * a">
+                    <button type="button" id="btn-checker-run" class="btn-primary">
+                        <i class="fas fa-check-double"></i> Verificar Balance
+                    </button>
+                </div>
+
+                <div class="checker-presets-row">
+                    <span>Ecuaciones de prueba rápida:</span>
+                    <button type="button" class="checker-preset-btn" data-eq="F = m * a">Segunda Ley de Newton</button>
+                    <button type="button" class="checker-preset-btn" data-eq="p + 0.5 * rho * v^2 = p">Ecuación de Bernoulli</button>
+                    <button type="button" class="checker-preset-btn" data-eq="E = m * c^2">Equivalencia Masa-Energía</button>
+                    <button type="button" class="checker-preset-btn" data-eq="delta_p = f * (L / D) * 0.5 * rho * v^2">Darcy-Weisbach</button>
+                    <button type="button" class="checker-preset-btn" data-eq="v = a * t + 0.5 * g * t^2">Incompatible (Velocidad = Acel*t + Posición)</button>
+                </div>
+            </div>
+
+            <div class="panel-card">
+                <div class="card-title">
+                    <i class="fas fa-poll"></i> Diagnóstico de Balance y Desglose Dimensional
+                </div>
+                <div id="checker-result-box">
+                    <p class="text-muted">Ingresá una ecuación arriba para diagnosticar su coherencia dimensional.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===============================================================
+             TAB 3: SIMILITUD Y LEYES DE ESCALA
+             =============================================================== -->
+        <section id="tab-similarity" class="tab-panel">
+            <div class="section-header">
+                <h2><i class="fas fa-compress-arrows-alt"></i> Similitud Física y Leyes de Escala (Modelo vs. Prototipo)</h2>
+                <p>Calculá los factores de escala cinemáticos y dinámicos a partir de la escala geométrica $\lambda_L = L_m / L_p$. Detectá automáticamente incompatibilidades entre similitudes concurrentes (ej. conflicto Froude vs. Reynolds en hidrodinámica naval).</p>
+            </div>
+
+            <div class="panel-card">
+                <div class="card-title">
+                    <i class="fas fa-sliders-h"></i> Parámetros de Escalamiento Experimental
+                </div>
+
+                <div class="sim-controls-grid">
+                    <div class="form-group">
+                        <label for="sim-criterion">Criterio Rector de Similitud</label>
+                        <select id="sim-criterion" class="form-select">
+                            <option value="froude">Similitud de Froude (Fr) - Superficie Libre / Canales / Olas</option>
+                            <option value="reynolds">Similitud de Reynolds (Re) - Flujo Interno / Aeronáutica / Sumergidos</option>
+                            <option value="mach">Similitud de Mach (Ma) - Flujo Compresible / Ondas de Choque</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sim-lambda-L">Escala Geométrica $\lambda_L = L_m / L_p$</label>
+                        <input type="number" id="sim-lambda-L" class="form-input" value="0.04" step="0.001" min="0.0001">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sim-lambda-rho">Razón de Densidades $\lambda_\rho = \rho_m / \rho_p$</label>
+                        <input type="number" id="sim-lambda-rho" class="form-input" value="1.0" step="0.01">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sim-lambda-g">Razón de Gravedades $\lambda_g = g_m / g_p$</label>
+                        <input type="number" id="sim-lambda-g" class="form-input" value="1.0" step="0.01">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sim-lambda-mu">Razón de Viscosidades $\lambda_\mu = \mu_m / \mu_p$</label>
+                        <input type="number" id="sim-lambda-mu" class="form-input" value="1.0" step="0.01">
+                    </div>
+                </div>
+
+                <button type="button" id="btn-sim-solve" class="btn-primary">
+                    <i class="fas fa-calculator"></i> Resolver Factores de Escala
+                </button>
+            </div>
+
+            <div class="panel-card">
+                <div class="card-title">
+                    <i class="fas fa-tachometer-alt"></i> Resultados de Similitud y Detección de Conflictos
+                </div>
+                <div id="sim-results-container"></div>
+            </div>
+        </section>
+
+        <!-- ===============================================================
+             TAB 4: SÍNTESIS DE LEYES DE POTENCIA
+             =============================================================== -->
+        <section id="tab-synthesizer" class="tab-panel">
+            <div class="section-header">
+                <h2><i class="fas fa-magic"></i> Síntesis Algebraica de Leyes de Potencia</h2>
+                <p>Deducí automáticamente la forma analítica monomial de una magnitud objetivo $Y \propto X_1^{\alpha_1} X_2^{\alpha_2} \dots X_p^{\alpha_p}$ a partir de un conjunto de variables de control independientes.</p>
+            </div>
+
+            <div class="synth-layout">
+                <div class="panel-card">
+                    <div class="card-title">
+                        <i class="fas fa-bullseye"></i> Selección de Variables
+                    </div>
+
+                    <div class="form-group">
+                        <label for="synth-target-select">Variable Objetivo ($Y$):</label>
+                        <select id="synth-target-select" class="form-select"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="synth-basis-select">Añadir Variable de Control Base ($X_i$):</label>
+                        <div class="input-with-btn">
+                            <select id="synth-basis-select" class="form-select"></select>
+                            <button type="button" id="btn-synth-add-basis" class="btn-primary" title="Añadir base">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Base Actual de Variables:</label>
+                        <div id="synth-basis-chips" class="chips-container"></div>
+                    </div>
+
+                    <button type="button" id="btn-synth-solve" class="btn-primary" style="width: 100%;">
+                        <i class="fas fa-bolt"></i> Deducir Ley de Potencia
+                    </button>
+                </div>
+
+                <div class="panel-card">
+                    <div class="card-title">
+                        <i class="fas fa-square-root-alt"></i> Ley Monomial Deducida
+                    </div>
+                    <div id="synth-result-box">
+                        <p class="text-muted">Configurá las variables a la izquierda para sintetizar la ley dimensional.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===============================================================
+             TAB 5: CATÁLOGO DE NÚMEROS ADIMENSIONALES
+             =============================================================== -->
+        <section id="tab-catalog" class="tab-panel">
+            <div class="section-header">
+                <h2><i class="fas fa-book-bookmark"></i> Compendio de Números Adimensionales Clásicos</h2>
+                <p>Explorá más de 20 números adimensionales fundamentales en mecánica de fluidos, transferencia de calor, transporte de masa y aerodinámica, con sus balances de fuerzas característicos y límites asintóticos.</p>
+            </div>
+
+            <div class="catalog-toolbar">
+                <div class="form-group catalog-search-input">
+                    <input type="text" id="catalog-search-input" class="form-input" placeholder="Buscar por nombre, símbolo (Re, Nu, Fr...), balance físico o dominio...">
+                </div>
+                <div class="form-group">
+                    <select id="catalog-domain-filter" class="form-select">
+                        <option value="ALL">Todos los dominios físicos</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="catalog-cards-container" class="catalog-grid"></div>
+        </section>
+
+        <!-- ===============================================================
+             TAB 6: TERMINAL CLI WEB INTERACTIVO
+             =============================================================== -->
+        <section id="tab-terminal" class="tab-panel">
+            <div class="section-header">
+                <h2><i class="fas fa-terminal"></i> Terminal Interactivo CLI de `dimensional`</h2>
+                <p>Ejecutá los comandos nativos de la CLI de Python directamente en tu navegador con resaltado de sintaxis y respuesta instantánea.</p>
+            </div>
+
+            <div class="terminal-window">
+                <div class="terminal-titlebar">
+                    <div class="terminal-dots">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                    <div class="terminal-title">dimensional-cli ~ bash — 80x24</div>
+                    <div></div>
+                </div>
+
+                <div id="terminal-output" class="terminal-body"></div>
+
+                <div class="terminal-input-row">
+                    <span class="term-prompt">$ dimensional</span>
+                    <input type="text" id="terminal-input" class="terminal-cli-input" placeholder="Escribí un comando (ej: demo, check F=m*a, pi rho v L mu F, scale L=0.04 froude)..." autocomplete="off" spellcheck="false">
+                </div>
+            </div>
+        </section>
+
+        <!-- ===============================================================
+             TAB 7: TRATADO TEÓRICO
+             =============================================================== -->
+        <section id="tab-theory" class="tab-panel">
+            <article class="theory-article">
+                <h2>Fundamentos Rigurosos del Análisis Dimensional y Similitud</h2>
+
+                <div class="theory-callout">
+                    <h4><i class="fas fa-info-circle"></i> Enfoque Computacional Exacto</h4>
+                    <p>A diferencia de los paquetes tradicionales basados en aritmética de coma flotante IEEE 754 (que sufren truncamientos al calcular determinantes o rangos de matrices mal condicionadas), <code>dimensional</code> utiliza aritmética racional pura con enteros arbitrarios ($\mathbb{Q}$). Esto garantiza que el rango de la matriz dimensional y los vectores generadores del espacio nulo $\ker(D)$ sean estrictamente exactos.</p>
+                </div>
+
+                <h3>1. El Principio de Homogeneidad Dimensional de Fourier (1822)</h3>
+                <p>En su célebre obra <em>Théorie analytique de la chaleur</em>, Joseph Fourier estableció que cualquier ecuación que describa un fenómeno físico real debe ser dimensionalmente homogénea: todos los términos que se suman o restan deben tener exactamente la misma dimensión física, y el miembro izquierdo debe coincidir idénticamente con el derecho.</p>
+                <p>Formalmente, en el Sistema Internacional (SI), toda magnitud física derivada $Q$ se expresa como una combinación monomial de siete dimensiones base fundamentales:</p>
+                <p>$$[Q] = \mathsf{M}^a \, \mathsf{L}^b \, \mathsf{T}^c \, \Theta^d \, \mathsf{I}^e \, \mathsf{N}^f \, \mathsf{J}^g, \quad \text{con } a,b,c,d,e,f,g \in \mathbb{Q}$$</p>
+
+                <h3>2. El Teorema $\Pi$ de Vaschy-Buckingham (1892, 1914)</h3>
+                <p>Formulado inicialmente por el ingeniero francés Aimé Vaschy en 1892 y formalizado por Edgar Buckingham en 1914, el teorema establece:</p>
+                <p><em>Si un proceso físico involucra $n$ magnitudes físicas independientes $\{q_1, q_2, \dots, q_n\}$, relacionadas por una función dimensionalmente homogénea $\Phi(q_1, \dots, q_n) = 0$, y dichas magnitudes abarcan $r$ dimensiones fundamentales independientes (donde $r = \mathrm{rango}(D)$ es el rango de la matriz dimensional), entonces la ecuación puede reescribirse de manera completamente equivalente en términos de $k = n - r$ números adimensionales independientes:</em></p>
+                <p>$$\Psi(\Pi_1, \Pi_2, \dots, \Pi_k) = 0$$</p>
+
+                <h3>3. Geometría del Espacio Nulo (Kernel de la Matriz Dimensional)</h3>
+                <p>La construcción sistemática de los grupos $\Pi$ es un problema de álgebra lineal pura. Sea $D \in \mathbb{Q}^{m \times n}$ la matriz dimensional del problema, donde la fila $i$ representa la dimensión fundamental $d_i$ y la columna $j$ representa los exponentes dimensionales de la variable $q_j$.</p>
+                <p>Un monomio $\Pi = q_1^{k_1} q_2^{k_2} \dots q_n^{k_n}$ es adimensional si y sólo si el vector de exponentes $\mathbf{k} = [k_1, \dots, k_n]^T$ satisface el sistema homogéneo:</p>
+                <p>$$D \mathbf{k} = \mathbf{0}$$</p>
+                <p>Por lo tanto, el conjunto de todos los grupos adimensionales posibles forma el <strong>espacio nulo</strong> (o kernel) de la matriz $D$:</p>
+                <p>$$\mathbf{k} \in \ker(D)$$</p>
+                <p>Aplicando el <strong>Teorema Rango-Nulidad</strong> de Sylvester:</p>
+                <p>$$\dim(\ker(D)) = n - \mathrm{rango}(D) = k$$</p>
+                <p>Mediante eliminación de Gauss-Jordan exacta con pivoteo completo, obtenemos la forma escalonada reducida por filas (RREF). Las columnas libres determinan los parámetros arbitrarios, los cuales normalizamos multiplicando por el mínimo común múltiplo (MCM) de los denominadores y dividiendo por el máximo común divisor (MCD) para obtener bases enteras coprimas irreducibles.</p>
+
+                <h3>4. Leyes de Similitud y Efectos de Escala (Model Testing)</h3>
+                <p>Para extrapolar resultados de un modelo a escala (laboratorio o túnel aerodinámico) a un prototipo a escala real, deben cumplirse tres niveles jerárquicos de similitud:</p>
+                <ol>
+                    <li><strong>Similitud Geométrica:</strong> Todas las dimensiones lineales del modelo guardan una razón constante con las del prototipo ($\lambda_L = L_m / L_p$).</li>
+                    <li><strong>Similitud Cinemática:</strong> Las líneas de corriente y las velocidades en puntos homólogos son proporcionales en magnitud y paralelas en dirección ($\lambda_v = v_m / v_p$).</li>
+                    <li><strong>Similitud Dinámica:</strong> Todas las fuerzas actuantes (inercia, viscosidad, gravedad, presión, elasticidad, tensión superficial) mantienen razones constantes en puntos correspondientes.</li>
+                </ol>
+
+                <h3>5. El Dilema Froude-Reynolds en Ensayos Navales</h3>
+                <p>Uno de los ejemplos más notables de incompatibilidad experimental ocurre en la hidrodinámica de buques y canales de superficie libre. La resistencia total de un casco involucra fuerzas de resistencia por formación de olas (gobernadas por el número de Froude $Fr = v / \sqrt{gL}$) y resistencia de fricción viscosa en la capa límite (gobernada por el número de Reynolds $Re = \rho v L / \mu$).</p>
+                <p>Para igualar simultáneamente $Fr_m = Fr_p$ y $Re_m = Re_p$ usando el mismo fluido (agua, $\lambda_\mu = 1, \lambda_\rho = 1$ bajo gravedad natural $\lambda_g = 1$):</p>
+                <ul>
+                    <li>Por Froude: $\lambda_v = \sqrt{\lambda_L}$</li>
+                    <li>Por Reynolds: $\lambda_v = 1 / \lambda_L$</li>
+                </ul>
+                <p>Igualando ambas condiciones:</p>
+                <p>$$\sqrt{\lambda_L} = \frac{1}{\lambda_L} \implies \lambda_L^{1.5} = 1 \implies \lambda_L = 1$$</p>
+                <p>Es decir, ¡la única manera de satisfacer ambas condiciones simultáneamente con agua es construyendo el modelo a escala 1:1! La genialidad de William Froude consistió en descomponer analíticamente el coeficiente de resistencia total $C_T = C_F(Re) + C_W(Fr)$, calculando $C_F$ mediante correlaciones de placa plana y escalando $C_W$ por Froude.</p>
+            </article>
+        </section>
+
+    </main>
+
+    <!-- SITE FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <strong>dimensional</strong> — Laboratorio de Análisis Dimensional &copy; 2026 Loren Hey.
+            </div>
+            <div class="footer-links">
+                <a href="https://github.com/lorenhey/dimensional" target="_blank"><i class="fab fa-github"></i> Código Fuente</a>
+                <a href="https://lorenhey.github.io/" target="_blank"><i class="fas fa-globe"></i> Portfolio</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="js/dimension-data.js"></script>
+    <script src="js/dimensional-engine.js"></script>
+    <script src="js/matrix-renderer.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
